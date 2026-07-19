@@ -1,0 +1,33 @@
+{
+  "name": "Volodymyr Kukushkin",
+  "role": "Lead Data / Software Engineer",
+  "location": "Málaga, ES",
+  "email": "volodymyr.kukushkin88@gmail.com",
+  "linkedin": "https://www.linkedin.com/in/volodymyr-kukushkin-88",
+  "thesis": "I translate business problems into scalable architecture. 15+ years across high-load systems, big data, and real-time platforms.",
+  "stats": [
+    { "n": "15+", "label": "years engineering" },
+    { "n": "2.5TB+", "label": "data processed" },
+    { "n": "5M+", "label": "tasks in production" },
+    { "n": "300+", "label": "agents served" }
+  ],
+  "interests": [
+    { "id": "data", "title": "Data", "desc": "Big data platforms, pipelines, and real-time processing at terabyte scale." },
+    { "id": "robotics", "title": "Robotics", "desc": "Physical computing and embedded systems — where software meets the real world." },
+    { "id": "automation", "title": "Automation", "desc": "Eliminating repetitive work through well-designed systems." },
+    { "id": "research", "title": "Research", "desc": "Deep dives into how things actually work — from CPython internals to distributed consensus." }
+  ],
+  "about": {
+    "bio": "TODO: Vladimir will provide short bio text",
+    "hobbies": "TODO: hobbies section to be filled"
+  },
+  "career": [
+    { "company": "SoftServe", "period": "2009–2012", "role": "Python Engineer", "scene": "automation frameworks, SSH orchestration" },
+    { "company": "EPAM Systems", "period": "2012–2016", "role": "Senior Python Engineer", "scene": "high-load news backend, cluster monitoring" },
+    { "company": "EPAM Systems", "period": "2016–2017", "role": "Senior Python/JS Engineer", "scene": "Cordova mobile, offline-first iOS" },
+    { "company": "Rep'nUp", "period": "2017–2018", "role": "Senior Python Back-End", "scene": "asyncio ecosystem, AI + social integrations" },
+    { "company": "Totango", "period": "2018–2020", "role": "Senior Data / Java Engineer", "scene": "2.5TB for AI training, CRM integrations" },
+    { "company": "Portside", "period": "2020–2023", "role": "Senior → Lead Engineer", "scene": "aircraft scheduling & optimization from scratch" },
+    { "company": "Portside", "period": "2023–now", "role": "Lead Software Engineer", "scene": "real-time ticketing: 300+ agents, 5M+ tasks" }
+  ]
+}

@@ -1,0 +1,536 @@
+/* ============================================
+   vkukushkin.dev — Design System
+   Fonts: DM Mono (labels/code) + DM Sans (body)
+   Aesthetic: terminal-dark hero, clean light body
+   ============================================ */
+
+:root {
+  --ink: #0d1117;          /* dark surface (hero, nav, footer) */
+  --ink-2: #161b22;        /* dark surface raised */
+  --ink-border: #21262d;
+  --paper: #fafafa;        /* light page bg */
+  --card: #ffffff;
+  --line: #e6e6e3;
+  --line-strong: #cfcfcb;
+  --text: #1a1a18;
+  --text-2: #62625e;
+  --text-3: #9c9c96;
+  --text-inv: #e6edf3;
+  --text-inv-2: #8b949e;
+  --accent: #58a6ff;       /* terminal blue */
+  --accent-dark: #1f6feb;
+  --accent-soft: #eaf2fd;  /* accent tint (tags, icons) */
+  --mono: 'DM Mono', ui-monospace, monospace;
+  --sans: 'DM Sans', system-ui, sans-serif;
+  --radius: 8px;
+  --radius-lg: 14px;
+  --maxw: 1080px;
+}
+
+/* ============================================
+   SILVER theme — same layout, platinum/graphite
+   palette. Toggled via data-theme="silver" on <html>.
+   Only color values change here; a few structural
+   tweaks (hero glow, card top border) live in the
+   [data-theme="silver"] rules further down.
+   ============================================ */
+:root[data-theme="silver"] {
+  --ink: #e8eaee;          /* silver surface (hero, nav, footer) */
+  --ink-2: #dde0e6;        /* silver raised / grid lines */
+  --ink-border: #cfd3da;
+  --paper: #f4f5f7;        /* platinum page bg */
+  --card: #ffffff;
+  --line: #cfd3da;
+  --line-strong: #cfd3da;
+  --text: #24282f;         /* graphite */
+  --text-2: #5a616c;
+  --text-3: #9aa0aa;
+  --text-inv: #24282f;     /* text on the (now light) hero/nav */
+  --text-inv-2: #5a616c;
+  --accent: #3d4450;       /* dark steel */
+  --accent-dark: #3d4450;
+  --accent-soft: #eceef2;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--paper);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+/* ---------- Nav ---------- */
+.nav {
+  background: var(--ink);
+  border-bottom: 1px solid var(--ink-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  height: 60px;
+}
+
+.logo {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-inv);
+  text-decoration: none;
+}
+
+.logo .tilde { color: var(--accent); }
+
+.nav-links {
+  display: flex;
+  gap: 22px;
+  margin-left: auto;
+}
+
+.nav-links a {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-inv-2);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.nav-links a:hover, .nav-links a.active { color: var(--text-inv); }
+
+.nav-cta {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink);
+  background: var(--accent);
+  padding: 7px 14px;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.nav-cta:hover { background: #79b8ff; }
+
+/* ---------- Hero ---------- */
+.hero {
+  background: var(--ink);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--ink-2) 1px, transparent 1px),
+    linear-gradient(90deg, var(--ink-2) 1px, transparent 1px);
+  background-size: 36px 36px;
+  opacity: 0.4;
+}
+
+.hero-inner {
+  position: relative;
+  padding: 84px 0 64px;
+}
+
+.hero-kicker {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--accent);
+}
+
+.hero h1 {
+  font-size: clamp(40px, 7vw, 64px);
+  font-weight: 700;
+  color: var(--text-inv);
+  letter-spacing: -2px;
+  line-height: 1.05;
+  margin-top: 16px;
+}
+
+.hero .thesis {
+  font-size: 17px;
+  font-weight: 300;
+  color: var(--text-inv-2);
+  max-width: 520px;
+  margin-top: 18px;
+  line-height: 1.7;
+}
+
+.hero-ctas { display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+
+.btn {
+  font-family: var(--mono);
+  font-size: 13px;
+  padding: 11px 22px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.15s;
+  display: inline-block;
+}
+
+.btn-primary { background: var(--accent); color: var(--ink); font-weight: 500; }
+.btn-primary:hover { background: #79b8ff; }
+.btn-ghost { border: 1px solid #30363d; color: var(--text-inv); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+.hero-stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 48px;
+  flex-wrap: wrap;
+}
+
+.stat .n {
+  font-family: var(--mono);
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--text-inv);
+}
+
+.stat .l {
+  font-size: 12px;
+  color: var(--text-inv-2);
+  margin-top: 2px;
+}
+
+/* ---------- Sections ---------- */
+.section { padding: 64px 0; }
+.section.tight { padding-top: 0; }
+
+.kicker {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--accent-dark);
+}
+
+.section h2 {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  margin-top: 8px;
+}
+
+.section .lede {
+  font-size: 15px;
+  color: var(--text-2);
+  margin-top: 10px;
+  max-width: 560px;
+}
+
+/* ---------- Interest cards ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.card:hover { border-color: var(--accent-dark); transform: translateY(-2px); }
+
+.card .icon {
+  width: 40px; height: 40px;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent-dark);
+}
+
+.card h3 { font-size: 16px; font-weight: 600; margin-top: 14px; }
+.card p { font-size: 13px; color: var(--text-2); margin-top: 6px; line-height: 1.6; }
+
+/* ---------- Career story placeholder ---------- */
+.story-slot {
+  margin-top: 28px;
+  border: 2px dashed var(--line-strong);
+  border-radius: var(--radius-lg);
+  padding: 48px 32px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: var(--card);
+}
+
+.story-slot .note { font-size: 14px; color: var(--text-2); line-height: 1.7; }
+.story-slot .note strong { color: var(--text); }
+
+/* ---------- Blog cards ---------- */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.blog-card {
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius);
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--text-3);
+}
+
+.blog-card .soon {
+  font-family: var(--mono);
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.blog-card.real {
+  border-style: solid;
+  border-color: var(--line);
+  background: var(--card);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.blog-card.real:hover { border-color: var(--accent-dark); }
+
+.blog-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent-dark);
+  background: var(--accent-soft);
+  padding: 3px 8px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.blog-card.real h3 { font-size: 15px; color: var(--text); margin-top: 10px; }
+.blog-card.real .date { font-family: var(--mono); font-size: 11px; margin-top: 8px; }
+
+/* ---------- About page ---------- */
+.about-hero { padding: 64px 0 32px; }
+.about-hero h1 { font-size: 40px; font-weight: 700; letter-spacing: -1.5px; }
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 40px;
+  margin-top: 32px;
+}
+
+@media (max-width: 720px) { .about-grid { grid-template-columns: 1fr; } }
+
+.about-text { font-size: 15px; color: var(--text-2); line-height: 1.8; }
+.about-text .placeholder {
+  border: 2px dashed var(--line-strong);
+  border-radius: var(--radius);
+  padding: 32px;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text-3);
+  text-align: center;
+}
+
+.side-block { margin-bottom: 28px; }
+.side-block h3 {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--text-3);
+  font-weight: 500;
+}
+.side-block .rows { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+.side-row { display: flex; justify-content: space-between; font-size: 13px; }
+.side-row .k { color: var(--text-2); }
+.side-row .v { font-family: var(--mono); font-size: 12px; color: var(--text); }
+
+/* ---------- Blog post page ---------- */
+.post-hero { padding: 56px 0 8px; max-width: 780px; }
+
+.post-back {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-3);
+  text-decoration: none;
+}
+.post-back:hover { color: var(--accent-dark); }
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.post-date {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.post-hero h1 {
+  font-size: clamp(30px, 5vw, 42px);
+  font-weight: 700;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+  margin-top: 14px;
+}
+
+.post-banner {
+  max-width: 780px;
+  padding-top: 28px;
+}
+
+.post-banner img {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+
+/* Show the banner that matches the active theme (default = terminal/blue). */
+.post-banner .banner-silver { display: none; }
+:root[data-theme="silver"] .post-banner .banner-blue { display: none; }
+:root[data-theme="silver"] .post-banner .banner-silver { display: block; }
+
+.post-body {
+  max-width: 780px;
+  padding-top: 24px;
+  padding-bottom: 64px;
+}
+
+.post-body p {
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--text-2);
+  margin-top: 20px;
+}
+
+.post-body p:first-child { margin-top: 0; }
+
+a.blog-card.real { display: block; text-decoration: none; }
+
+/* Post card with a banner background. The image URLs are supplied per-post
+   via inline --card-img-blue / --card-img-silver custom properties, so this
+   rule stays post-agnostic. Default = terminal/blue theme (dark overlay,
+   light text); silver theme swaps to the light banner + dark text. */
+.blog-card.real.banner {
+  background-size: cover;
+  background-position: center;
+  background-image:
+    linear-gradient(120deg, rgba(13,17,23,0.86) 28%, rgba(13,17,23,0.30) 100%),
+    var(--card-img-blue);
+}
+
+.blog-card.real.banner h3 { color: var(--text-inv); }
+.blog-card.real.banner .date { color: var(--text-inv-2); }
+
+:root[data-theme="silver"] .blog-card.real.banner {
+  background-image:
+    linear-gradient(120deg, rgba(255,255,255,0.92) 30%, rgba(255,255,255,0.45) 100%),
+    var(--card-img-silver);
+}
+
+:root[data-theme="silver"] .blog-card.real.banner h3 { color: var(--text); }
+:root[data-theme="silver"] .blog-card.real.banner .date { color: var(--text-3); }
+
+/* ---------- Footer ---------- */
+.footer {
+  background: var(--ink);
+  padding: 36px 0;
+  margin-top: 32px;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.footer a, .footer span {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-inv-2);
+  text-decoration: none;
+}
+
+.footer a:hover { color: var(--accent); }
+
+.footer .copy { margin-left: auto; font-size: 11px; }
+
+/* ---------- Reveal animation ---------- */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s, transform 0.6s; }
+.reveal.in { opacity: 1; transform: none; }
+
+/* ---------- Theme toggle ---------- */
+.nav-end { display: flex; align-items: center; gap: 10px; }
+
+.theme-toggle {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--ink-border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-inv-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.theme-toggle:hover { color: var(--text-inv); border-color: var(--accent); }
+
+/* ---------- Silver theme — structural tweaks ---------- */
+:root[data-theme="silver"] .nav {
+  background: rgba(244, 245, 247, 0.92);
+  backdrop-filter: blur(8px);
+}
+
+:root[data-theme="silver"] .hero {
+  background: linear-gradient(160deg, var(--ink) 0%, var(--paper) 70%);
+  border-bottom: 1px solid var(--ink-border);
+}
+
+:root[data-theme="silver"] .hero::after {
+  content: '';
+  position: absolute;
+  top: -120px;
+  right: -80px;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 65%);
+  pointer-events: none;
+}
+
+:root[data-theme="silver"] .card { border-top: 3px solid var(--ink-2); }
+:root[data-theme="silver"] .card:hover { box-shadow: 0 8px 24px rgba(36, 40, 47, 0.06); }
+
+:root[data-theme="silver"] .blog-card { background: rgba(255, 255, 255, 0.5); }
+
+:root[data-theme="silver"] .btn-ghost {
+  border-color: var(--ink-border);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+:root[data-theme="silver"] .nav-cta:hover,
+:root[data-theme="silver"] .btn-primary:hover { background: #4d5563; }
+
+:root[data-theme="silver"] .footer { border-top: 1px solid var(--ink-border); }

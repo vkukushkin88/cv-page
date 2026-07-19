@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>About — Volodymyr Kukushkin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a class="logo" href="index.html"><span class="tilde">~/</span>vkukushkin</a>
+    <div class="nav-links">
+      <a href="index.html">home</a>
+      <a href="about.html" class="active">about</a>
+      <a href="blog/index.html">blog</a>
+    </div>
+    <div class="nav-end">
+      <a class="nav-cta" href="assets/Volodymyr_Kukushkin_CV.pdf" download>download CV</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme" title="Switch theme">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" stroke="none"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="container about-hero">
+  <div class="kicker">ABOUT</div>
+  <h1>Beyond the job title</h1>
+</div>
+
+<div class="container about-grid" style="padding-bottom:64px">
+
+  <div class="about-text">
+    <div class="placeholder">
+      // short bio goes here — Vladimir will provide the text<br>
+      // keep it 2-3 paragraphs: who I am, what I believe, what I'm looking for
+    </div>
+
+    <h2 style="font-size:22px;margin-top:40px;letter-spacing:-0.5px;color:var(--text)">How I work</h2>
+    <p style="margin-top:12px">I don't see my role as closing Jira tickets. My primary goal is to understand the business problem behind the task, translate it into a scalable technical solution, and help the business grow through data, architecture, and well-designed processes.</p>
+    <p style="margin-top:12px">As a Team Lead, I build well-coordinated, professional teams where engineers feel ownership and work as a single unit. As a Tech Lead, I focus on architecture, documentation, and standards — ensuring solutions are maintainable and understandable for the entire team, not just their original authors.</p>
+
+    <h2 style="font-size:22px;margin-top:40px;letter-spacing:-0.5px;color:var(--text)">Outside of work</h2>
+    <div class="placeholder" style="margin-top:12px">
+      // hobbies section — to be filled<br>
+      // ideas: robotics projects, tinkering, research reading, sports...
+    </div>
+  </div>
+
+  <aside>
+    <div class="side-block">
+      <h3>FACTS</h3>
+      <div class="rows">
+        <div class="side-row"><span class="k">Location</span><span class="v">Málaga, ES</span></div>
+        <div class="side-row"><span class="k">Experience</span><span class="v">15+ years</span></div>
+        <div class="side-row"><span class="k">Role</span><span class="v">Lead Engineer</span></div>
+        <div class="side-row"><span class="k">Education</span><span class="v">MSc, top honors</span></div>
+        <div class="side-row"><span class="k">Specialty</span><span class="v">InfoSec systems</span></div>
+      </div>
+    </div>
+
+    <div class="side-block">
+      <h3>LANGUAGES</h3>
+      <div class="rows">
+        <div class="side-row"><span class="k">English</span><span class="v">B2</span></div>
+        <div class="side-row"><span class="k">Spanish</span><span class="v">B1</span></div>
+        <div class="side-row"><span class="k">Ukrainian</span><span class="v">native</span></div>
+        <div class="side-row"><span class="k">Russian</span><span class="v">native</span></div>
+      </div>
+    </div>
+
+    <div class="side-block">
+      <h3>INTERESTS</h3>
+      <div class="rows">
+        <div class="side-row"><span class="v">data</span></div>
+        <div class="side-row"><span class="v">robotics</span></div>
+        <div class="side-row"><span class="v">automation</span></div>
+        <div class="side-row"><span class="v">research</span></div>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <a href="mailto:volodymyr.kukushkin88@gmail.com">volodymyr.kukushkin88@gmail.com</a>
+    <a href="https://www.linkedin.com/in/volodymyr-kukushkin-88" target="_blank" rel="noopener">linkedin</a>
+    <span>Málaga, ES</span>
+    <span class="copy">© 2026 Volodymyr Kukushkin</span>
+  </div>
+</footer>
+
+<script>
+document.getElementById('themeToggle').addEventListener('click', function () {
+  var n = document.documentElement.getAttribute('data-theme') === 'silver' ? 'dark' : 'silver';
+  document.documentElement.setAttribute('data-theme', n);
+  try { localStorage.setItem('theme', n); } catch (e) {}
+});
+</script>
+
+</body>
+</html>

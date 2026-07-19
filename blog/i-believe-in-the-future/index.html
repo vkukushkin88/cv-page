@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<title>I Believe in the Future — Volodymyr Kukushkin</title>
+<meta name="description" content="Programming has always been evolving — from machine code to assembly to high-level languages. AI is the next step, and I'm genuinely excited about it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a class="logo" href="../../index.html"><span class="tilde">~/</span>vkukushkin</a>
+    <div class="nav-links">
+      <a href="../../index.html">home</a>
+      <a href="../../about.html">about</a>
+      <a href="../index.html" class="active">blog</a>
+    </div>
+    <div class="nav-end">
+      <a class="nav-cta" href="../../assets/Volodymyr_Kukushkin_CV.pdf" download>download CV</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme" title="Switch theme">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" stroke="none"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="container post-hero">
+  <a class="post-back" href="../index.html">← all posts</a>
+  <div class="post-meta">
+    <span class="blog-tag">reflections</span>
+    <span class="post-date">July 14, 2026</span>
+    <span class="post-date">· 4 min read</span>
+  </div>
+  <h1>I Believe in the Future</h1>
+</div>
+
+<div class="container post-banner">
+  <img class="banner-blue" src="terminal_blue_evolution_banner.png" alt="A punch card dissolving into lines of code, then into abstract shapes, while a person stands watching a distant light">
+  <img class="banner-silver" src="code_evolution_banner.png" alt="A punch card dissolving into lines of code, then into abstract shapes, while a person stands watching a distant light" loading="lazy">
+</div>
+
+<article class="container post-body">
+
+  <p>I've been writing software for more than fifteen years, and lately I keep hearing the same question, asked with varying degrees of anxiety: what happens to programmers now that AI can write code? I'd like to share why I'm not worried — and why, honestly, I'm more excited about this profession than I've been in a long time.</p>
+
+  <p>Programming has never stood still. The first developers didn't type code at all — they wired plugboards and punched holes in cards, feeding machines raw sequences of ones and zeros. Assembly came along and let people write named instructions instead of memorizing opcodes, and it felt like a revolution. Then came Fortran and C, and with them a real controversy: many experienced programmers didn't trust compilers. Letting a machine generate your machine code seemed lazy, even reckless. Real engineers wrote it by hand.</p>
+
+  <p>Then higher-level languages, memory management we didn't have to think about, open-source libraries, frameworks, the cloud. Each step moved us a little further from the hardware and a little closer to the actual problem. And each step changed what a programmer's day looked like. Skills that once defined the craft — squeezing a routine into a few bytes of memory, hand-optimizing every loop — quietly became niche, while new ones took their place. Nobody today measures an engineer by how well they juggle CPU registers.</p>
+
+  <p>I think about this history whenever someone tells me AI is going to end programming. It doesn't look like an ending to me. It looks like the next step in the same long story: another layer between us and the machine, another chance to spend our attention on things that matter more.</p>
+
+  <p>What's genuinely changing is where the effort goes. I already spend noticeably less time typing code and noticeably more time on everything around it: understanding what problem we're actually solving, defining requirements precisely, deciding how the system should be shaped, weighing trade-offs between approaches, and judging whether the result is right. The typing was never the hard part. It was just the part that took the most hours. Now that's shifting.</p>
+
+  <p>None of this means technical depth stops mattering. If anything, it matters more. AI is remarkably good at producing plausible code — and plausible is not the same as correct. To tell the difference, you have to understand how systems behave: where the data flows, what fails under load, which shortcut will hurt you a year from now. You can't evaluate what you don't understand, and you can't direct a tool well if you couldn't do the work yourself. The knowledge stays; the keyboard time goes.</p>
+
+  <p>This also breaks some old habits of measurement. Lines of code written was always a questionable metric — now it's simply meaningless, like measuring a modern developer in punch cards per day. If a machine can produce a thousand lines in a minute, the volume of code tells you nothing about the value of the engineer who shipped it. What actually counts is harder to put on a dashboard: the quality of the problems you choose to solve, the soundness of the decisions you make along the way, and the impact your work has on real people and real businesses. I think that's a healthier way to value engineers, and I'm glad the industry is being nudged toward it.</p>
+
+  <p>So no, I don't believe programming is dying. I believe it's becoming more of what it was always supposed to be: less transcription, more thinking. The mechanical part is being absorbed by the tools, the way it has been at every stage before, and what's left is the part I got into this profession for — understanding messy problems and building things that solve them well.</p>
+
+  <p>That's why I'm optimistic. Not because I think the transition will be effortless, but because I've seen this pattern before, and every time the tools took over the routine, engineers ended up doing more interesting work, not less. I believe this is where the industry is heading, and I believe it's a good place.</p>
+
+  <p>I believe in the future.</p>
+
+</article>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <a href="mailto:volodymyr.kukushkin88@gmail.com">volodymyr.kukushkin88@gmail.com</a>
+    <a href="https://www.linkedin.com/in/volodymyr-kukushkin-88" target="_blank" rel="noopener">linkedin</a>
+    <span>Málaga, ES</span>
+    <span class="copy">© 2026 Volodymyr Kukushkin</span>
+  </div>
+</footer>
+
+<script>
+document.getElementById('themeToggle').addEventListener('click', function () {
+  var n = document.documentElement.getAttribute('data-theme') === 'silver' ? 'dark' : 'silver';
+  document.documentElement.setAttribute('data-theme', n);
+  try { localStorage.setItem('theme', n); } catch (e) {}
+});
+</script>
+
+</body>
+</html>
