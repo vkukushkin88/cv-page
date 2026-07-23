@@ -83,6 +83,9 @@ body {
 }
 
 .logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-family: var(--mono);
   font-size: 14px;
   font-weight: 500;
@@ -91,6 +94,13 @@ body {
 }
 
 .logo .tilde { color: var(--accent); }
+
+.logo-mark {
+  flex-shrink: 0;
+  color: var(--accent);
+}
+
+.logo-mark rect { color: var(--text-inv-2); }
 
 .nav-links {
   display: flex;
