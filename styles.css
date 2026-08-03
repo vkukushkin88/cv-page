@@ -20,6 +20,7 @@
   --accent: #58a6ff;       /* terminal blue */
   --accent-dark: #1f6feb;
   --accent-soft: #eaf2fd;  /* accent tint (tags, icons) */
+  --accent-glow: 31, 111, 235;  /* accent-dark as RGB, for pulse shadows */
   --mono: 'DM Mono', ui-monospace, monospace;
   --sans: 'DM Sans', system-ui, sans-serif;
   --radius: 8px;
@@ -50,6 +51,7 @@
   --accent: #3d4450;       /* dark steel */
   --accent-dark: #3d4450;
   --accent-soft: #eceef2;
+  --accent-glow: 61, 68, 80;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -271,20 +273,170 @@ body {
 .card h3 { font-size: 16px; font-weight: 600; margin-top: 14px; }
 .card p { font-size: 13px; color: var(--text-2); margin-top: 6px; line-height: 1.6; }
 
-/* ---------- Career story placeholder ---------- */
-.story-slot {
+/* ---------- Career story ---------- */
+.story-stage {
+  position: relative;
   margin-top: 28px;
-  border: 2px dashed var(--line-strong);
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius-lg);
-  padding: 48px 32px;
+  padding: 40px 32px;
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 28px;
   background: var(--card);
+  min-height: 140px;
+  overflow: hidden;
+  cursor: pointer;
 }
 
-.story-slot .note { font-size: 14px; color: var(--text-2); line-height: 1.7; }
-.story-slot .note strong { color: var(--text); }
+.story-stage:focus-visible { outline: 2px solid var(--accent-dark); outline-offset: 3px; }
+
+/* banner sits to the right of the resting figure — figure stays visible */
+.story-overlay {
+  position: absolute;
+  left: 108px; right: 32px; top: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  z-index: 5;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+  pointer-events: none;
+}
+
+.story-overlay.hidden { opacity: 0; transform: translateX(24px); }
+
+.story-term {
+  width: 100%;
+  max-width: 420px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--paper);
+  overflow: hidden;
+  font-family: var(--mono);
+}
+
+.story-term-bar {
+  display: flex; align-items: center; gap: 5px;
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--line);
+  background: var(--ink-2);
+}
+
+.story-term-bar .dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--line-strong);
+}
+
+.story-term-title {
+  margin-left: 6px;
+  font-size: 10px;
+  letter-spacing: 0.4px;
+  color: var(--text-3);
+}
+
+.story-term-body { padding: 12px 14px 13px; }
+
+.story-term-line { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 12.5px; }
+.story-term-prompt { color: var(--accent); }
+.story-term-sig { color: var(--text-3); }
+.story-term-cmd { color: var(--text); }
+
+.story-caret {
+  display: inline-block;
+  width: 7px; height: 14px;
+  background: var(--accent-dark);
+  animation: story-blink 1.1s steps(1) infinite;
+}
+
+@keyframes story-blink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+
+.story-term-out {
+  margin-top: 7px;
+  font-size: 11px;
+  color: var(--text-2);
+}
+
+
+/* figure rests visible at left, then walks right and settles */
+.story-figure-wrap {
+  flex-shrink: 0;
+  transform: translateX(0);
+  transition: transform 1.3s cubic-bezier(0.22, 0.9, 0.35, 1);
+}
+
+.story-figure-wrap.walked-in { transform: translateX(46px); }
+
+.story-figure {
+  color: var(--text);
+}
+
+.story-figure line, .story-figure circle { transform-box: fill-box; transform-origin: center; }
+
+/* limbs are static until .playing declares the walk cycle */
+.story-stage.playing .story-figure .fig-arm-l { animation: swing-l 0.9s ease-in-out infinite; }
+.story-stage.playing .story-figure .fig-arm-r { animation: swing-r 0.9s ease-in-out infinite; }
+.story-stage.playing .story-figure .fig-leg-l { animation: swing-r 0.9s ease-in-out infinite; }
+.story-stage.playing .story-figure .fig-leg-r { animation: swing-l 0.9s ease-in-out infinite; }
+.story-stage.playing .story-figure .fig-head { animation: bob 0.9s ease-in-out infinite; }
+
+@keyframes swing-l { 0%,100% { transform: rotate(-14deg); } 50% { transform: rotate(14deg); } }
+@keyframes swing-r { 0%,100% { transform: rotate(14deg); } 50% { transform: rotate(-14deg); } }
+@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+
+.story-props {
+  position: relative;
+  flex: 1 1 auto;
+  height: 76px;
+  min-width: 0;
+}
+
+.story-prop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--accent-dark);
+  opacity: 0;
+  transform: translateX(46px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.story-prop.active { opacity: 1; transform: translateX(0); }
+
+.story-copy {
+  flex-shrink: 0;
+  width: 190px;
+}
+
+.story-caption { font-size: 13px; color: var(--text-2); line-height: 1.6; min-height: 60px; }
+.story-caption strong { color: var(--text); display: block; font-size: 14px; margin-bottom: 2px; }
+
+.story-dots { display: flex; gap: 6px; margin-top: 14px; }
+.story-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--line-strong);
+  border: none; padding: 0; cursor: pointer;
+  transition: background 0.3s;
+}
+.story-dot.active { background: var(--accent-dark); }
+
+.story-hint {
+  margin-top: 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.3px;
+  color: var(--text-3);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.story-stage.playing .story-hint { opacity: 1; }
+
+@media (max-width: 720px) {
+  .story-stage { flex-wrap: wrap; padding: 28px 20px; }
+  .story-copy { width: 100%; order: 3; }
+  .story-overlay { left: 84px; right: 20px; }
+  .story-term-cmd { font-size: 11.5px; }
+}
 
 /* ---------- Blog cards ---------- */
 .blog-grid {
