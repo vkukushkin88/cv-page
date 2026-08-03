@@ -8,8 +8,8 @@
   "stats": [
     { "n": "15+", "label": "years engineering" },
     { "n": "2.5TB+", "label": "data processed" },
-    { "n": "5M+", "label": "tasks in production" },
-    { "n": "300+", "label": "agents served" }
+    { "n": "6", "label": "industries & domains" },
+    { "n": "99.9%+", "label": "uptime delivered" }
   ],
   "interests": [
     { "id": "data", "title": "Data", "desc": "Big data platforms, pipelines, and real-time processing at terabyte scale." },
@@ -18,8 +18,8 @@
     { "id": "research", "title": "Research", "desc": "Deep dives into how things actually work — from CPython internals to distributed consensus." }
   ],
   "about": {
-    "bio": "TODO: Vladimir will provide short bio text",
-    "hobbies": "TODO: hobbies section to be filled"
+    "bio": "I hold a Master's degree in Information Security for Restricted-Access Environments, with a cryptography-focused thesis — the itch for provable, airtight systems started there and never really left. I'm drawn to hard engineering problems: the kind where a database is spiking, a queue is backing up, or one message quietly breaks a pipeline, and the fix means tracing the system until the \"why\" actually clicks. I've spent time restructuring 1.5TB of raw data into something a model could actually learn from, and a year and a half as the de facto tier-4 escalation on a production system — closing it out with zero open tickets. I like problems that fight back a little.",
+    "hobbies": "Outside of work I'm usually outdoors — hiking, biking, skiing, and chasing the right light for wildlife photography."
   },
   "career": [
     { "company": "SoftServe", "period": "2009–2012", "role": "Python Engineer", "scene": "automation frameworks, SSH orchestration" },
