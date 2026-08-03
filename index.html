@@ -96,96 +96,20 @@
   <div class="container">
     <div class="kicker reveal">CAREER STORY</div>
     <h2 class="reveal">15 years in motion</h2>
-    <p class="lede reveal">Seven chapters, told by one stick figure. From automation frameworks in 2009 to leading a real-time platform serving millions of tasks today.</p>
-    <div class="story-stage reveal" id="storyStage">
-      <div class="story-overlay" id="storyOverlay">
-        <div class="story-term">
-          <div class="story-term-bar">
-            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-            <span class="story-term-title">career.sh</span>
-          </div>
-          <div class="story-term-body">
-            <div class="story-term-line">
-              <span class="story-term-prompt">~/career</span>
-              <span class="story-term-sig">$</span>
-              <span class="story-term-cmd">./replay --from 2009 --to now</span><span class="story-caret"></span>
-            </div>
-            <div class="story-term-out"># 8 chapters, 1 stick figure — click anywhere to run</div>
-          </div>
+    <p class="lede reveal">Fifteen years, replayed as a build log. From SSH automation in 2009 to leading a real-time platform today.</p>
+    <div class="term reveal" id="term">
+      <div class="term-bar">
+        <span class="tdot"></span><span class="tdot"></span><span class="tdot"></span>
+        <span class="term-title">career.sh — replay</span>
+        <span class="term-status" id="termStatus">idle</span>
+      </div>
+      <div class="term-body" id="termBody">
+        <div class="term-cmdline">
+          <span class="term-user">~/career</span><span class="term-sig">$</span>
+          <span class="term-typed" id="termTyped"></span><span class="term-caret" id="termCaret"></span>
         </div>
-      </div>
-
-      <div class="story-figure-wrap" id="storyFigureWrap">
-        <svg class="story-figure" width="44" height="76" viewBox="0 0 44 76">
-          <circle class="fig-head" cx="22" cy="9" r="7" fill="none" stroke="currentColor" stroke-width="2.5"/>
-          <line class="fig-spine" x1="22" y1="16" x2="22" y2="44" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-          <line class="fig-arm-l" x1="22" y1="24" x2="6" y2="16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-          <line class="fig-arm-r" x1="22" y1="24" x2="38" y2="16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-          <line class="fig-leg-l" x1="22" y1="44" x2="10" y2="70" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-          <line class="fig-leg-r" x1="22" y1="44" x2="34" y2="70" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-        </svg>
-      </div>
-
-      <div class="story-props">
-        <svg class="story-prop" data-scene="0" viewBox="0 0 100 76">
-          <rect x="8" y="34" width="36" height="22" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-          <path d="M12 40h28M12 46h20M12 52h24" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-          <path d="M50 30c10-6 22-6 32 0M50 40c12-6 24-6 36 0M50 50c14-6 26-6 40 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.7"/>
-        </svg>
-        <svg class="story-prop" data-scene="1" viewBox="0 0 100 76">
-          <rect x="10" y="14" width="18" height="48" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-          <line x1="10" y1="24" x2="28" y2="24" stroke="currentColor" stroke-width="1.4"/>
-          <line x1="10" y1="34" x2="28" y2="34" stroke="currentColor" stroke-width="1.4"/>
-          <path d="M40 50 L52 26 L64 44 L76 18 L90 34" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <text x="60" y="66" font-family="var(--mono)" font-size="10" fill="currentColor">&lt;2ms</text>
-        </svg>
-        <svg class="story-prop" data-scene="2" viewBox="0 0 100 76">
-          <rect x="8" y="16" width="84" height="40" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>
-          <rect x="16" y="24" width="16" height="24" fill="none" stroke="currentColor" stroke-width="1.6"/>
-          <rect x="36" y="30" width="16" height="18" fill="none" stroke="currentColor" stroke-width="1.6"/>
-          <rect x="56" y="20" width="16" height="28" fill="none" stroke="currentColor" stroke-width="1.6"/>
-          <line x1="30" y1="12" x2="24" y2="20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-          <text x="8" y="68" font-family="var(--mono)" font-size="9" fill="currentColor">lustre / gpfs</text>
-        </svg>
-        <svg class="story-prop" data-scene="3" viewBox="0 0 100 76">
-          <circle cx="20" cy="24" r="12" fill="none" stroke="currentColor" stroke-width="2"/>
-          <path d="M12 24a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="1.6" fill="none"/>
-          <circle cx="16" cy="20" r="1.6" fill="currentColor"/>
-          <circle cx="24" cy="20" r="1.6" fill="currentColor"/>
-          <rect x="46" y="10" width="18" height="14" rx="7" fill="none" stroke="currentColor" stroke-width="1.8"/>
-          <rect x="72" y="26" width="18" height="14" rx="7" fill="none" stroke="currentColor" stroke-width="1.8"/>
-          <rect x="52" y="46" width="18" height="14" rx="7" fill="none" stroke="currentColor" stroke-width="1.8"/>
-        </svg>
-        <svg class="story-prop" data-scene="4" viewBox="0 0 100 76">
-          <path d="M10 20c8-6 16-6 24 0M10 26c8-6 16-6 24 0M10 32c8-6 16-6 24 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-          <ellipse cx="50" cy="52" rx="14" ry="6" fill="none" stroke="currentColor" stroke-width="2"/>
-          <ellipse cx="50" cy="44" rx="14" ry="6" fill="none" stroke="currentColor" stroke-width="2"/>
-          <ellipse cx="50" cy="36" rx="14" ry="6" fill="none" stroke="currentColor" stroke-width="2"/>
-          <path d="M78 54 L88 32 L84 32 L94 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <text x="66" y="66" font-family="var(--mono)" font-size="9" fill="currentColor">TB · spark</text>
-        </svg>
-        <svg class="story-prop" data-scene="5" viewBox="0 0 100 76">
-          <path d="M8 40 L52 24 L60 30 L92 16 L88 22 L60 38 L52 32 L20 46Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-          <rect x="30" y="50" width="40" height="20" fill="none" stroke="currentColor" stroke-width="1.6"/>
-          <line x1="30" y1="58" x2="70" y2="58" stroke="currentColor" stroke-width="1.2"/>
-          <line x1="42" y1="50" x2="42" y2="70" stroke="currentColor" stroke-width="1.2"/>
-        </svg>
-        <svg class="story-prop" data-scene="6" viewBox="0 0 100 76">
-          <path d="M14 12v10a4 4 0 0 0 4 4h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          <rect x="10" y="6" width="16" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
-          <rect x="40" y="18" width="52" height="34" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-          <path d="M46 44l10-14 8 8 10-16 12 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <svg class="story-prop" data-scene="7" viewBox="0 0 100 76">
-          <path d="M10 40h20M36 40h16M58 40h10M74 40h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 6" opacity="0.8"/>
-          <text x="84" y="44" font-family="var(--mono)" font-size="18" fill="currentColor">?</text>
-        </svg>
-      </div>
-
-      <div class="story-copy">
-        <div class="story-caption" id="storyCaption"></div>
-        <div class="story-dots" id="storyDots"></div>
-        <div class="story-hint">click to stop · esc to reset</div>
+        <div class="term-log" id="termLog"></div>
+        <div class="term-hint" id="termHint"># 15 years, 8 chapters — click anywhere to run</div>
       </div>
     </div>
   </div>
@@ -236,88 +160,122 @@ document.getElementById('themeToggle').addEventListener('click', function () {
 });
 
 (function () {
-  var scenes = [
-    { company: 'SoftServe', period: '2009–2012', role: 'Python Engineer', scene: 'Automation frameworks, SSH orchestration' },
-    { company: 'EPAM Systems', period: '2012–2016', role: 'Senior Python Engineer', scene: 'High-pressure, low-latency API for Thomson Reuters' },
-    { company: 'EPAM Systems', period: '2016–2017', role: 'Senior Python/JS Engineer', scene: 'Dashboards for heavily-loaded filesystems (Lustre/GPFS)' },
-    { company: "Rep'nUp", period: '2017–2018', role: 'Senior Python Back-End', scene: 'Asyncio ecosystem, AI + social integrations' },
-    { company: 'Totango', period: '2018–2020', role: 'Senior Data / Java Engineer', scene: 'TBs of data, Spark pipelines, streaming' },
-    { company: 'Portside', period: '2020–2023', role: 'Senior → Lead Engineer', scene: 'Aircraft scheduling & optimization from scratch' },
-    { company: 'Portside', period: '2023–now', role: 'Lead Software Engineer', scene: 'Real-time ticketing platform, live dashboards' },
-    { company: 'What’s next', period: '', role: '', scene: 'Still being written.' }
+  var term = document.getElementById('term');
+  if (!term) return;
+  var typedEl = document.getElementById('termTyped');
+  var logEl = document.getElementById('termLog');
+  var hintEl = document.getElementById('termHint');
+  var statusEl = document.getElementById('termStatus');
+  var caretEl = document.getElementById('termCaret');
+  var bodyEl = document.getElementById('termBody');
+
+  function toBottom() { bodyEl.scrollTop = bodyEl.scrollHeight; }
+
+  var CMD = './replay --from 2009 --to now';
+
+  var chapters = [
+    { yr: '2009', co: 'SoftServe', st: 'ok',
+      sub: 'Python engineer · automation frameworks, SSH orchestration' },
+    { yr: '2012', co: 'EPAM → Thomson Reuters', st: 'ok',
+      sub: 'high-pressure, low-latency API · p99 <span class="term-spark">▁▂▁▇▂▁</span> <span class="mv">1.8ms</span>' },
+    { yr: '2016', co: 'EPAM · infra', st: 'ok',
+      sub: 'dashboards for heavily-loaded filesystems · <span class="mv">lustre / gpfs</span>' },
+    { yr: '2017', co: "Rep'nUp", st: 'ok',
+      sub: 'asyncio ecosystem · AI + social integrations' },
+    { yr: '2018', co: 'Totango', st: 'ok',
+      sub: 'spark pipelines <span class="term-bar-fill">████████░░</span> <span class="mv">2.5TB</span> structured for model training' },
+    { yr: '2020', co: 'Portside', st: 'ok',
+      sub: 'aircraft scheduling &amp; optimization, built from scratch' },
+    { yr: '2023', co: 'Portside · lead', st: 'live',
+      sub: 'real-time ticketing · tier-4 escalation · uptime <span class="mv">99.9%+</span>' }
   ];
 
-  var props = document.querySelectorAll('.story-prop');
-  var captionEl = document.getElementById('storyCaption');
-  var dotsEl = document.getElementById('storyDots');
-  var stage = document.getElementById('storyStage');
-  var overlay = document.getElementById('storyOverlay');
-  var figureWrap = document.getElementById('storyFigureWrap');
-  if (!stage) return;
+  var token = 0;
+  var timers = [];
+  var running = false;
 
-  scenes.forEach(function (_, i) {
-    var b = document.createElement('button');
-    b.className = 'story-dot';
-    b.type = 'button';
-    b.setAttribute('aria-label', 'Scene ' + (i + 1));
-    b.addEventListener('click', function () { show(i); restart(); });
-    dotsEl.appendChild(b);
+  function at(ms, fn) { timers.push(setTimeout(fn, ms)); }
+
+  function reset() {
+    token++;
+    timers.forEach(clearTimeout);
+    timers = [];
+    running = false;
+    typedEl.textContent = '';
+    logEl.innerHTML = '';
+    hintEl.style.display = '';
+    hintEl.textContent = '# 15 years, 8 chapters — click anywhere to run';
+    statusEl.textContent = 'idle';
+    caretEl.style.display = '';
+    term.classList.remove('running');
+    bodyEl.scrollTop = 0;
+  }
+
+  function row(c) {
+    var r = document.createElement('div');
+    r.className = 'term-row';
+    r.innerHTML = '<span class="term-yr">[' + c.yr + ']</span>' +
+                  '<span class="term-co">' + c.co + '</span>' +
+                  '<span class="term-lead"></span>' +
+                  '<span class="term-st ' + (c.st === 'live' ? 'live' : '') + '">' + c.st + '</span>';
+    logEl.appendChild(r);
+    var s = document.createElement('div');
+    s.className = 'term-sub';
+    s.innerHTML = '<span class="br">└</span>' + c.sub;
+    logEl.appendChild(s);
+    toBottom();
+  }
+
+  function run() {
+    reset();
+    var my = ++token;
+    running = true;
+    term.classList.add('running');
+    statusEl.textContent = 'running';
+    hintEl.style.display = 'none';
+
+    var t = 0;
+    // type the command
+    for (var i = 1; i <= CMD.length; i++) {
+      (function (n) {
+        at(t, function () { if (my === token) typedEl.textContent = CMD.slice(0, n); });
+      })(i);
+      t += 32;
+    }
+
+    t += 1260;
+    chapters.forEach(function (c) {
+      at(t, function () { if (my === token) row(c); });
+      t += 1380;
+    });
+
+    t += 780;
+    at(t, function () {
+      if (my !== token) return;
+      var f = document.createElement('div');
+      f.className = 'term-final';
+      f.innerHTML = '<span class="term-yr">&gt;</span> what’s next? ' +
+        'let’s discuss → <a class="term-cta" href="mailto:volodymyr.kukushkin88@gmail.com">volodymyr.kukushkin88@gmail.com</a> ' +
+        '<span class="term-caret"></span>';
+      logEl.appendChild(f);
+      f.querySelector('.term-cta').addEventListener('click', function (e) { e.stopPropagation(); });
+      statusEl.textContent = 'done';
+      caretEl.style.display = 'none';
+      hintEl.style.display = '';
+      hintEl.textContent = '# click to reset';
+      toBottom();
+    });
+  }
+
+  term.addEventListener('click', function () {
+    if (running || logEl.children.length) reset(); else run();
   });
-  var dots = dotsEl.querySelectorAll('.story-dot');
-
-  var idx = 0, timer = null;
-
-  function show(i) {
-    idx = i;
-    props.forEach(function (p) { p.classList.toggle('active', +p.dataset.scene === i); });
-    dots.forEach(function (d, di) { d.classList.toggle('active', di === i); });
-    var s = scenes[i];
-    captionEl.innerHTML = '<strong>' + s.company + (s.period ? ' · ' + s.period : '') + '</strong>' + (s.role ? s.role + ' — ' : '') + s.scene;
-  }
-
-  function next() { show((idx + 1) % scenes.length); }
-
-  function restart() {
-    if (timer) clearInterval(timer);
-    timer = setInterval(next, 3200);
-  }
-
-  var startDelay = null;
-
-  function start() {
-    stage.classList.add('playing');
-    overlay.classList.add('hidden');
-    figureWrap.classList.add('walked-in');
-    show(0);
-    startDelay = setTimeout(restart, 1300);
-  }
-
-  function stop() {
-    if (timer) { clearInterval(timer); timer = null; }
-    if (startDelay) { clearTimeout(startDelay); startDelay = null; }
-    stage.classList.remove('playing');
-    overlay.classList.remove('hidden');
-    figureWrap.classList.remove('walked-in');
-    props.forEach(function (p) { p.classList.remove('active'); });
-    dots.forEach(function (d) { d.classList.remove('active'); });
-    captionEl.innerHTML = '';
-    idx = 0;
-  }
-
-  function toggle() {
-    if (stage.classList.contains('playing')) stop(); else start();
-  }
-
-  stage.addEventListener('click', function (e) {
-    if (e.target.closest('.story-dot')) return;
-    toggle();
-  });
-  stage.setAttribute('tabindex', '0');
-  stage.setAttribute('role', 'button');
-  stage.setAttribute('aria-label', 'Play career story animation');
-  stage.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
-    if (e.key === 'Escape') stop();
+  term.setAttribute('tabindex', '0');
+  term.setAttribute('role', 'button');
+  term.setAttribute('aria-label', 'Play career replay');
+  term.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); term.click(); }
+    if (e.key === 'Escape') reset();
   });
 })();
 </script>
