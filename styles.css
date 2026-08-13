@@ -638,7 +638,7 @@ a.blog-card.real { display: block; text-decoration: none; }
 
 :root[data-theme="silver"] .blog-card.real.banner {
   background-image:
-    linear-gradient(120deg, rgba(255,255,255,0.92) 30%, rgba(255,255,255,0.45) 100%),
+    linear-gradient(120deg, rgba(255,255,255,0.92) 50%, rgba(255,255,255,0.45) 100%),
     var(--card-img-silver);
 }
 
@@ -693,6 +693,39 @@ a.blog-card.real { display: block; text-decoration: none; }
 
 .theme-toggle:hover { color: var(--text-inv); border-color: var(--accent); }
 
+/* ---------- Nav — narrow screens ----------
+   The nav is a single non-wrapping row, so on small screens the CTA and theme
+   toggle used to be pushed past the right edge. Tighten the spacing, then drop
+   the CTA down to just "CV" when there still isn't room. */
+@media (max-width: 720px) {
+  .nav-inner { gap: 14px; }
+  .nav-links { gap: 14px; }
+  .nav-links a { font-size: 11px; }
+  .nav-end { gap: 8px; }
+  .nav-cta { padding: 6px 10px; }
+  .logo { font-size: 13px; }
+}
+
+@media (max-width: 560px) {
+  .container { padding: 0 16px; }
+  .nav-inner { gap: 10px; }
+  .nav-links { gap: 12px; }
+  .nav-cta {
+    font-size: 0;               /* hide "download CV" … */
+    padding: 6px 9px;
+  }
+  .nav-cta::after {
+    content: 'CV';              /* … and show a short label instead */
+    font-size: 12px;
+  }
+  .logo .tilde { display: none; }
+}
+
+@media (max-width: 380px) {
+  .nav-links a { font-size: 10.5px; }
+  .nav-links { gap: 10px; }
+}
+
 /* ---------- Silver theme — structural tweaks ---------- */
 :root[data-theme="silver"] .nav {
   background: rgba(244, 245, 247, 0.92);
@@ -719,7 +752,9 @@ a.blog-card.real { display: block; text-decoration: none; }
 :root[data-theme="silver"] .card { border-top: 3px solid var(--ink-2); }
 :root[data-theme="silver"] .card:hover { box-shadow: 0 8px 24px rgba(36, 40, 47, 0.06); }
 
-:root[data-theme="silver"] .blog-card { background: rgba(255, 255, 255, 0.5); }
+/* background-color, not the shorthand — the shorthand would reset the
+   background-size/position that .blog-card.real.banner relies on. */
+:root[data-theme="silver"] .blog-card { background-color: rgba(255, 255, 255, 0.5); }
 
 :root[data-theme="silver"] .btn-ghost {
   border-color: var(--ink-border);
