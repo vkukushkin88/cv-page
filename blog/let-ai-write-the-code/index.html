@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="../../theme.js"></script>
+<title>Let AI Write the Code. Keep the Engineering. — Volodymyr Kukushkin</title>
+<meta name="description" content="AI can research, implement, test and review. That doesn't mean it should own the process. On delegation, protocols, and keeping engineering judgment where it belongs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a class="logo" href="../../index.html">
+      <svg class="logo-mark" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="16" rx="3"/>
+        <path d="M7.5 9.5l3 2.5-3 2.5"/>
+        <path d="M13 15h4"/>
+      </svg>
+      <span class="tilde">~/</span>vkukushkin</a>
+    <div class="nav-links">
+      <a href="../../index.html">home</a>
+      <a href="../../about.html">about</a>
+      <a href="../index.html" class="active">blog</a>
+    </div>
+    <div class="nav-end">
+      <a class="nav-cta" href="../../cv/Volodymyr_Kukushkin_CV.pdf" download>download CV</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme" title="Switch theme">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" stroke="none"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="container post-hero">
+  <a class="post-back" href="../index.html">← all posts</a>
+  <div class="post-meta">
+    <span class="blog-tag">engineering</span>
+    <span class="post-date">August 13, 2026</span>
+    <span class="post-date">· 8 min read</span>
+  </div>
+  <h1>Let AI Write the Code. Keep the Engineering.</h1>
+</div>
+
+<div class="container post-banner">
+  <img class="banner-blue" src="terminal_blue_protocol_banner.png" alt="An engineer at the centre of a workflow diagram, delegating research, code generation, testing and review to AI agents, with unstructured AI-driven development shown as a tangle on the left">
+  <img class="banner-silver" src="code_protocol_banner.png" alt="An engineer at the centre of a workflow diagram, delegating research, code generation, testing and review to AI agents, with unstructured AI-driven development shown as a tangle on the left" loading="lazy">
+</div>
+
+<article class="container post-body">
+
+  <p>AI has changed software development.</p>
+
+  <p>That part is no longer controversial.</p>
+
+  <p>We can ask an AI coding assistant to explore a codebase, write a feature, generate tests, fix failures, refactor code, and even review its own work. Tasks that used to take hours can sometimes be completed in minutes.</p>
+
+  <p>But something interesting is happening.</p>
+
+  <p>For many developers, AI is not making development faster. It is making it slower.</p>
+
+  <p>A colleague recently told me that tasks that used to take him 6–8 hours can now take 8–12 hours when he uses AI. The tool that was supposed to save time became another source of work.</p>
+
+  <p>And I don't think the problem is that AI is bad. I don't think the problem is that the developer is bad either.</p>
+
+  <p>I think we are learning a new engineering discipline.</p>
+
+  <h2>The problem is not the code</h2>
+
+  <p>A common AI-assisted workflow looks something like this:</p>
+
+  <blockquote>
+    <p>Take a Jira ticket.<br>Give it to an agent.<br>Let the agent ask questions.<br>Let it build a prompt.<br>Let it create a plan.<br>Let it implement the plan.<br>Run the tests.<br>If something fails, retry.<br>Repeat until everything passes.</p>
+  </blockquote>
+
+  <p>It sounds great. And sometimes it is great.</p>
+
+  <p>For a small, isolated task, there is nothing wrong with letting an agent do most of the work.</p>
+
+  <p>The problem starts when this workflow becomes the default way of developing software.</p>
+
+  <p>At some point, the engineer stops making decisions and starts watching the system make decisions for them.</p>
+
+  <p>The code may work. The tests may pass. The pull request may even look perfectly reasonable.</p>
+
+  <p>But can the engineer explain why the solution looks the way it does?</p>
+
+  <p>Do they know whether the same problem was already solved somewhere else? Do they know what assumptions the AI made? Do they know what trade-offs were introduced? Do they know whether the solution fits the architecture?</p>
+
+  <p>And perhaps most importantly: <strong>do they know what the machine actually did?</strong></p>
+
+  <p>Passing tests is not the same thing as having a good solution.</p>
+
+  <h2>The real problem: we are bad at delegation</h2>
+
+  <p>I initially thought this was mainly a problem of "AI control."</p>
+
+  <p>I now think that is too narrow. The deeper problem is <strong>delegation</strong>.</p>
+
+  <p>Software engineers have always delegated work. We delegate to junior developers, senior developers, specialists, external services, build systems, compilers, static analyzers, and automated test suites.</p>
+
+  <p>AI is simply the most capable executor we have ever had.</p>
+
+  <p>And that creates a new problem.</p>
+
+  <p>When you delegate work to another engineer, you normally spend some time explaining the problem before saying:</p>
+
+  <blockquote>
+    <p>"Go build it."</p>
+  </blockquote>
+
+  <p>You discuss the context. You discuss constraints. You ask whether something similar already exists. You make sure the person understands the goal.</p>
+
+  <p>You don't usually hand someone a Jira ticket and disappear until they come back with a green test suite.</p>
+
+  <p>Yet this is exactly what we often do with AI. We ask it to build first.</p>
+
+  <h2>Don't start with "build this"</h2>
+
+  <p>One of the biggest changes in my own workflow has been very simple:</p>
+
+  <p><strong>I try not to start with implementation.</strong></p>
+
+  <p>Instead of:</p>
+
+  <blockquote>
+    <p>"Implement this feature."</p>
+  </blockquote>
+
+  <p>I start with:</p>
+
+  <blockquote>
+    <p>"Let's understand this problem first."</p>
+  </blockquote>
+
+  <p>What are we missing? Do we have enough information? Is there already a similar implementation? Could the problem already be solved somewhere in the system?</p>
+
+  <p>What parts of the existing architecture are relevant? Are there constraints we haven't considered? Could this solution conflict with something that already exists?</p>
+
+  <p>What are the possible approaches? What are the risks?</p>
+
+  <p>Only after these questions have been discussed do I want a plan. And only after the plan makes sense do I want implementation.</p>
+
+  <p>The workflow becomes:</p>
+
+  <p><strong>Research → Discussion → Plan → Implementation → Verification</strong></p>
+
+  <p>rather than:</p>
+
+  <p><strong>Task → Generate → Fix → Retry → Done</strong></p>
+
+  <p>That small change has a surprisingly large effect.</p>
+
+  <p>The AI is still doing most of the typing. But the engineer is doing the engineering.</p>
+
+  <h2>You don't need to read every line</h2>
+
+  <p>There is an important distinction here.</p>
+
+  <p>Keeping control does <strong>not</strong> mean manually reviewing every line of AI-generated code. That would completely miss the point of using AI.</p>
+
+  <p>A machine can read and generate code much faster than I can. The valuable human activity is higher-level.</p>
+
+  <p>I want to understand:</p>
+
+  <ul>
+    <li>what the solution is doing;</li>
+    <li>why it was chosen;</li>
+    <li>what changed in the system;</li>
+    <li>what assumptions it relies on;</li>
+    <li>what risks it introduces;</li>
+    <li>what happens in unusual cases;</li>
+    <li>whether the result actually solves the original problem.</li>
+  </ul>
+
+  <p>The question is not:</p>
+
+  <blockquote>
+    <p>"Did I read every line?"</p>
+  </blockquote>
+
+  <p>The question is:</p>
+
+  <blockquote>
+    <p><strong>"Do I understand the engineering decision the machine just made?"</strong></p>
+  </blockquote>
+
+  <p>That is the kind of control I want to keep.</p>
+
+  <h2>AI should be an executor, not the owner of the process</h2>
+
+  <p>This changes the role of the engineer.</p>
+
+  <p>When AI writes most of the code, the engineer's job moves up a level.</p>
+
+  <p>Less typing. More thinking. Less implementation. More direction. Less manual execution. More delegation and verification.</p>
+
+  <p>In my current workflow, I would roughly describe it as 80% discussion and reasoning and 20% supervising implementation.</p>
+
+  <p>The numbers aren't important. The shift is.</p>
+
+  <p>The engineer doesn't disappear from the process because AI can write code. The engineer becomes responsible for deciding <strong>what should be written in the first place</strong>.</p>
+
+  <h2>From individual habits to team protocols</h2>
+
+  <p>This is where I think the next step is.</p>
+
+  <p>It is not enough for one developer to develop good AI habits. Teams need shared ways of working.</p>
+
+  <p>Instead of telling developers:</p>
+
+  <blockquote>
+    <p>"Use AI responsibly."</p>
+  </blockquote>
+
+  <p>we should define actual protocols for AI-assisted development.</p>
+
+  <p>A protocol should answer questions such as:</p>
+
+  <ul>
+    <li>What must happen before implementation starts?</li>
+    <li>What information should the AI have?</li>
+    <li>Which decisions require human approval?</li>
+    <li>Which tasks can be fully automated?</li>
+    <li>What must be verified before a task is considered complete?</li>
+    <li>What happens when the implementation fails?</li>
+    <li>When should the system stop and ask a human?</li>
+  </ul>
+
+  <p>The important part is that these should not be just suggestions inside a prompt.</p>
+
+  <p>Where possible, the process should enforce them.</p>
+
+  <h2>What an AI development protocol can look like</h2>
+
+  <p>Imagine a team establishes a simple workflow.</p>
+
+  <h3>1. Research comes first</h3>
+
+  <p>An agent receives a task but cannot immediately start writing code.</p>
+
+  <p>It first has to inspect the relevant parts of the codebase, understand existing patterns, and identify dependencies.</p>
+
+  <p>Only then can it propose a solution.</p>
+
+  <h3>2. The plan is a checkpoint</h3>
+
+  <p>The agent produces a plan based on its research.</p>
+
+  <p>The plan is not automatically accepted.</p>
+
+  <p>Someone — ideally the engineer responsible for the task — decides whether the plan makes sense.</p>
+
+  <h3>3. Work happens in small steps</h3>
+
+  <p>The plan is split into independent tasks. Each task follows the same basic lifecycle:</p>
+
+  <p><strong>Implement → Test → Review → Complete</strong></p>
+
+  <p>This prevents one enormous autonomous operation from running through an entire feature without meaningful checkpoints.</p>
+
+  <h3>4. Verification is independent</h3>
+
+  <p>The same agent that writes the code should not be the only source of truth about whether the code is good.</p>
+
+  <p>Testing and review can be separate steps, potentially performed by separate agents.</p>
+
+  <p>The goal isn't to create an army of agents for the sake of it. The goal is to introduce independent checks into the process.</p>
+
+  <h3>5. Failure requires a decision</h3>
+
+  <p>When something fails, the system should not blindly retry forever. It should determine what happened.</p>
+
+  <p>Maybe the implementation is wrong. Maybe the original plan was wrong. Maybe the requirements are incomplete. Maybe the task itself needs clarification.</p>
+
+  <p>The possible outcomes should therefore include:</p>
+
+  <p><strong>retry → re-plan → ask the human → stop</strong></p>
+
+  <p>A failure becomes a decision point rather than another automatic loop.</p>
+
+  <h2>Make the rules harder to break</h2>
+
+  <p>There is another important lesson here.</p>
+
+  <p>If a rule is important, don't rely entirely on the AI remembering it.</p>
+
+  <p>For example, if only a particular stage of the workflow should be allowed to run tests, enforce that through permissions.</p>
+
+  <p>If an agent should not modify certain project state, don't just tell it not to.</p>
+
+  <p>If only a designated coordinator should communicate decisions back to the engineer, make that part of the architecture.</p>
+
+  <p>In other words:</p>
+
+  <blockquote>
+    <p><strong>Don't just prompt the process. Design the process.</strong></p>
+  </blockquote>
+
+  <p>A good protocol should survive an imperfect model.</p>
+
+  <p>The AI can misunderstand an instruction. It can forget context. It can make a wrong assumption.</p>
+
+  <p>The guardrails should still hold.</p>
+
+  <h2>The goal isn't less automation</h2>
+
+  <p>None of this is an argument against autonomous AI. Quite the opposite.</p>
+
+  <p>I want AI to do as much work as possible.</p>
+
+  <p>I want it to research. I want it to write code. I want it to run tests. I want it to find bugs. I want it to review implementations. I want it to do the boring work that humans are bad at.</p>
+
+  <p>But I don't want to delegate the decisions that define the engineering outcome simply because the machine is capable of executing them.</p>
+
+  <p>There is a difference between delegating <strong>execution</strong> and delegating <strong>responsibility</strong>.</p>
+
+  <p>We should automate the first as aggressively as possible. We should be much more careful with the second.</p>
+
+  <h2>The engineer is not becoming less important</h2>
+
+  <p>AI has changed software development, and I don't think there is any going back.</p>
+
+  <p>The amount of code written manually will probably continue to decrease. The amount of autonomous work will probably continue to increase. And AI agents will become dramatically better.</p>
+
+  <p>But that doesn't make engineering less important. It makes engineering judgment more important.</p>
+
+  <p>The strongest engineers of the AI era may not be the ones who can write the most code. They may be the ones who can:</p>
+
+  <p><strong>understand the problem, ask the right questions, delegate effectively, recognize a good solution, reject a bad one, and design a process that keeps humans responsible for the outcome.</strong></p>
+
+  <p>Let AI write the code.</p>
+
+  <p><strong>Keep the engineering.</strong></p>
+
+</article>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <a href="mailto:volodymyr.kukushkin88@gmail.com">volodymyr.kukushkin88@gmail.com</a>
+    <a href="https://www.linkedin.com/in/volodymyr-kukushkin-88" target="_blank" rel="noopener">linkedin</a>
+    <span>Málaga, ES</span>
+    <span class="copy">© 2026 Volodymyr Kukushkin</span>
+  </div>
+</footer>
+
+<script>
+document.getElementById('themeToggle').addEventListener('click', function () {
+  var n = document.documentElement.getAttribute('data-theme') === 'silver' ? 'dark' : 'silver';
+  document.documentElement.setAttribute('data-theme', n);
+  try { localStorage.setItem('theme', n); } catch (e) {}
+});
+</script>
+
+</body>
+</html>
