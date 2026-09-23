@@ -619,6 +619,78 @@ body {
   margin-top: 44px;
 }
 
+.post-body ol {
+  margin-top: 16px;
+  padding-left: 20px;
+}
+
+.post-body ol li {
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--text-2);
+  margin-top: 8px;
+}
+
+.post-body code {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  color: var(--text);
+  background: var(--accent-soft);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.post-body pre {
+  margin-top: 20px;
+  padding: 18px 20px;
+  background: var(--ink);
+  border: 1px solid var(--ink-border);
+  border-radius: var(--radius);
+  overflow-x: auto;
+}
+
+.post-body pre code {
+  background: none;
+  padding: 0;
+  color: var(--text-inv);
+  font-size: 13px;
+  line-height: 1.7;
+  white-space: pre;
+}
+
+.post-body .table-scroll {
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+.post-body table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.post-body th,
+.post-body td {
+  border: 1px solid var(--line);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.55;
+}
+
+.post-body th {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  background: var(--accent-soft);
+  white-space: nowrap;
+}
+
+.post-body td { color: var(--text-2); }
+
 a.blog-card.real { display: block; text-decoration: none; }
 
 /* Post card with a banner background. The image URLs are supplied per-post

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="../../theme.js"></script>
+<title>The Scheduling Problem: A Technical Deep Dive, and Where Agentic AI Actually Fits — Volodymyr Kukushkin</title>
+<meta name="description" content="A technical deep dive into a real aircraft + crew scheduling system: the math, the CP-SAT search algorithm, a worked example, and where agentic AI actually fits.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a class="logo" href="../../index.html">
+      <svg class="logo-mark" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="16" rx="3"/>
+        <path d="M7.5 9.5l3 2.5-3 2.5"/>
+        <path d="M13 15h4"/>
+      </svg>
+      <span class="tilde">~/</span>vkukushkin</a>
+    <div class="nav-links">
+      <a href="../../index.html">home</a>
+      <a href="../../about.html">about</a>
+      <a href="../index.html" class="active">blog</a>
+    </div>
+    <div class="nav-end">
+      <a class="nav-cta" href="../../cv/Volodymyr_Kukushkin_CV.pdf" download>download CV</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme" title="Switch theme">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" stroke="none"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="container post-hero">
+  <a class="post-back" href="../index.html">← all posts</a>
+  <div class="post-meta">
+    <span class="blog-tag">engineering</span>
+    <span class="post-date">September 22, 2026</span>
+    <span class="post-date">· 15 min read</span>
+  </div>
+  <h1>The Scheduling Problem: A Technical Deep Dive, and Where Agentic AI Actually Fits</h1>
+</div>
+
+<div class="container post-banner">
+  <img class="banner-blue" src="terminal_blue_scheduling_banner.png" alt="A tangled graph of crossing flight-connection paths thinning into a constraint solver panel that propagates, branches and prunes it down to two clean aircraft routes between JFK, ORD and ATL, with small AI agents assisting at the edges">
+  <img class="banner-silver" src="code_scheduling_banner.png" alt="A tangled graph of crossing flight-connection paths thinning into a constraint solver panel that propagates, branches and prunes it down to two clean aircraft routes between JFK, ORD and ATL, with small AI agents assisting at the edges" loading="lazy">
+</div>
+
+<article class="container post-body">
+
+  <p>This is a technical breakdown of a real scheduling system we build: one that jointly assigns aircraft and crews to flights. It's written problem-by-problem, with the math, the search algorithm, a worked toy example, a comparison of the realistic alternative approaches, and — since every roadmap conversation eventually asks — a concrete look at where agentic AI (LLM agents) genuinely helps versus where it doesn't. No customer names, no product names; just the problem and the engineering.</p>
+
+  <h2>Problem: what are we actually scheduling?</h2>
+
+  <p>We're solving three classical operations-research problems at the same time, not one:</p>
+
+  <ul>
+    <li><strong>Aircraft routing</strong> — which aircraft flies which flight leg. A vehicle-routing problem.</li>
+    <li><strong>Crew pairing</strong> — which pilots fly which chain of duties. Airlines run entire departments on this alone.</li>
+    <li><strong>Crew rostering</strong> — multi-day duty-time, rest, and work-life-balance limits layered on top of the pairings.</li>
+  </ul>
+
+  <p>Each of these has been studied individually as NP-hard since the 1960s–70s. We solve all three jointly, subject to dozens of discrete feasibility rules (duty time, minimum rest, aircraft-crew fit, pairing legality) and a set of weighted objective terms that encode what "good" means as a cost function. The stakes are not cosmetic: get this wrong and the failure mode isn't a UI bug, it's a pilot flying illegal duty hours.</p>
+
+  <h2>Problem: the search space is astronomically large</h2>
+
+  <p>There are two independent ways this blows up, and it's worth stating both precisely because they compound.</p>
+
+  <p><strong>Ordering.</strong> Once you know which flights a pilot or aircraft will fly, the order they're flown in still has to be decided, and valid orderings grow as <code>n!</code>. Ten events already gives 3,628,800 orderings. Twenty gives roughly 2.4×10¹⁸.</p>
+
+  <p><strong>Selection.</strong> Independent yes/no decisions — assign this pairing or don't, use this connection or don't — grow as <code>2ⁿ</code>. Twenty independent binary choices is over a million combinations; a hundred is 1.3×10³⁰.</p>
+
+  <p>A real instance has well over a hundred interacting flights, pilots, and aircraft. Neither curve is something you out-hardware your way past — you need an algorithm that never actually visits most of that space.</p>
+
+  <h2>Solution: a mathematical model, not a heuristic</h2>
+
+  <p>The system is a constraint solver (Google OR-Tools' CP-SAT), not a machine-learning model, and it does not guess. Below is a simplified version of the actual formulation — the real one has more index dimensions and roughly sixty feasibility rules, but this captures the structure.</p>
+
+  <h3>Sets</h3>
+
+  <pre><code>F  = flight legs, each with origin o(f), destination d(f),
+     departure dep(f), arrival arr(f)
+A  = aircraft, each compatible with a subset of flights C(a, f) ∈ {0,1}
+P  = pilots
+τ  = minimum turn time between two flights on the same aircraft
+R  = minimum rest time between two duties for the same pilot
+D  = maximum duty length (hours)</code></pre>
+
+  <h3>Decision variables</h3>
+
+  <pre><code>x[f,a]     ∈ {0,1}   flight f is flown by aircraft a
+z[f,f',a]  ∈ {0,1}   aircraft a flies f immediately before f'
+y[f,p]     ∈ {0,1}   pilot p crews flight f
+w[f,f',p]  ∈ {0,1}   pilot p flies f then f' within the same duty</code></pre>
+
+  <h3>Constraints (hard)</h3>
+
+  <pre><code>Coverage:     Σ_a x[f,a] = 1                     for every flight f
+Type fit:     x[f,a] ≤ C(a,f)                     for every f, a
+Continuity:   z[f,f',a] = 1  ⇒  d(f) = o(f')  and  dep(f') ≥ arr(f) + τ
+Duty length:  Σ_{f in duty} dur(f) + sit-time ≤ D  for every duty chain
+Rest:         start(next duty) − end(prior duty) ≥ R   for every pilot</code></pre>
+
+  <h3>Objective (soft, weighted)</h3>
+
+  <pre><code>minimize   Σ_i  w_i · penalty_i(schedule)</code></pre>
+
+  <p>where the <code>penalty_i</code> terms cover things like deadhead cost, crew idle time, work-life-balance violations, and aircraft swaps — around eighteen independently tunable weights in the production model, because "optimal" is a design choice, not a fact.</p>
+
+  <p>In CP-SAT terms, the continuity constraints above are exactly what the <code>AddCircuit</code> / <code>AddMultipleCircuit</code> global constraint is built for — treat each aircraft's assigned flights plus a depot node as a graph, and let the solver find a circuit through it. Duty-time and rest constraints map onto <code>AddCumulative</code> and interval variables (<code>NewOptionalIntervalVar</code> + <code>AddNoOverlap</code>), which is what lets the solver reason about "a pilot is a resource with capacity 1 over time" natively instead of us hand-rolling that logic.</p>
+
+  <h2>Solution: how the solver actually searches</h2>
+
+  <p>CP-SAT is a hybrid of SAT-style clause learning, linear-programming bounds, and constraint propagation, explored via branch-and-bound. The mechanism that matters most in practice is propagation: every time a variable is fixed, the solver immediately narrows the domains of everything connected to it, often eliminating whole branches before they're ever opened.</p>
+
+  <p>Here's a small, fully worked instance. Two aircraft, five flights, 45-minute minimum turn time:</p>
+
+  <pre><code>F1  JFK→ORD  08:00–10:00
+F2  ORD→JFK  11:00–13:00
+F3  JFK→ATL  09:30–11:30
+F4  ATL→ORD  12:30–14:00
+F5  ORD→ATL  15:00–16:30</code></pre>
+
+  <p>A flight <code>f</code> can feasibly precede flight <code>f'</code> on the same aircraft only if <code>d(f) = o(f')</code> and <code>dep(f') ≥ arr(f) + 45min</code>. Checking all pairs gives exactly four feasible connections: <code>F1→F2</code>, <code>F1→F5</code>, <code>F3→F4</code>, <code>F4→F5</code>. No other pair lines up in time and place. That's the entire "event-dependency graph" for this instance — a schedule is a path through it, not the whole thing.</p>
+
+  <p>Now watch the search. Say the solver branches first on <code>z[F1,F2]</code>, trying <code>true</code>:</p>
+
+  <ol>
+    <li><code>z[F1,F2] = 1</code> is fixed. Propagation immediately sets <code>z[F1,F5] = 0</code> — F1 can only feed into one next flight, and that slot is taken.</li>
+    <li><code>F3</code> has no feasible incoming edge in this graph, so it must start a chain on its own. Its only outgoing option is <code>F4</code>, so <code>z[F3,F4]</code> gets forced to <code>1</code> by propagation, not by branching.</li>
+    <li><code>F5</code> now has exactly one remaining feasible predecessor left (<code>F1</code> is excluded, so it must be <code>F4</code>), so <code>z[F4,F5] = 1</code> is also forced.</li>
+  </ol>
+
+  <p>Every remaining decision fell out of propagation — the solver found <code>{F1→F2}</code> and <code>{F3→F4→F5}</code>, exactly two chains for exactly two aircraft, with zero backtracking. Now consider the branch the solver <strong>didn't</strong> take: <code>z[F1,F2] = 0</code>. That forces F2 to become its own standalone chain (nothing else can reach it), which combined with the rest of the graph requires three separate aircraft routes to cover five flights — but only two aircraft exist. A global cardinality check (path count ≤ available aircraft) catches that immediately and the branch is pruned without ever assigning another variable. That's the entire reason a search over a space of billions of theoretical combinations resolves in milliseconds for an instance this size, and in minutes for a real one: constraint propagation prunes the graph before the solver ever walks it.</p>
+
+  <p>The solver terminates in one of two states, and both are reported honestly: <code>OPTIMAL</code> means branch-and-bound exhausted the tree and proved nothing scores better; <code>FEASIBLE</code> means it hit a time cap first and is returning the best schedule found, with a computable (if not always surfaced) bound on how far that could still be from optimal.</p>
+
+  <h2>Problem: the schedule isn't stable across runs</h2>
+
+  <p>Re-run the exact same instance twice and you can get two different — but equally valid — schedules. This surprises people the first time it happens, and it's a real operational cost: a dispatcher who published a schedule doesn't want it silently reshuffled overnight because a re-run happened to explore the tree in a different order.</p>
+
+  <p>There are three independent causes. First, <strong>symmetry</strong> — if two pilots are interchangeable for a given duty, swapping them produces a different assignment with an identical objective value, and the solver has no reason to prefer one over the other. Second, <strong>portfolio search</strong> — CP-SAT by default runs several search strategies in parallel across worker threads and returns whichever finds the best result first; which one wins is a function of thread scheduling, not just the model. Third, <strong>time-limited runs</strong> — if the solver is cut off before proving optimality, the <code>FEASIBLE</code> solution it happens to be holding at that moment depends on the exact path the search took, which can vary run to run even with identical input.</p>
+
+  <p><strong>Fixes, in order of how much they cost:</strong></p>
+
+  <p>Determinism knobs — pin <code>num_search_workers = 1</code> and a fixed <code>random_seed</code>. This alone removes thread-scheduling nondeterminism, at the cost of losing the speed benefit of parallel search.</p>
+
+  <p>Symmetry-breaking constraints — add a cheap tie-breaking rule (e.g., among interchangeable pilots, prefer the lower ID) so the solver converges on one canonical member of each equivalence class instead of an arbitrary one.</p>
+
+  <p>Warm-starting — feed the previous run's solution in via <code>AddHint</code>, biasing the search toward reproducing it rather than discovering an equally-good alternative from scratch.</p>
+
+  <p>Make stability an explicit objective term, rather than an accident. If <code>y*[f,p]</code> is last run's assignment, add:</p>
+
+  <pre><code>minimize  Σ_i w_i · penalty_i(schedule)  +  λ · Σ_{f,p} |y[f,p] − y*[f,p]|</code></pre>
+
+  <p>which linearizes cleanly for binaries (penalize <code>1 − y[f,p]</code> where <code>y*[f,p]=1</code>, and <code>y[f,p]</code> where <code>y*[f,p]=0</code>). This is the honest fix: it converts "the schedule happened not to change" from a coincidence of search order into a tunable, visible trade-off against pure optimality — you're explicitly telling the solver that a schedule close to what's already published is worth something, and saying how much.</p>
+
+  <h2>Deep dive: comparing the realistic alternatives</h2>
+
+  <p>CP-SAT isn't the only way to attack this class of problem, and it's worth being explicit about what the alternatives actually trade away.</p>
+
+  <div class="table-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th>Approach</th>
+        <th>Mechanism</th>
+        <th>Optimality guarantee</th>
+        <th>Determinism</th>
+        <th>Where it actually fits</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Exact CP / MILP (what we use)</td>
+        <td>Branch-and-bound + constraint propagation / cutting planes</td>
+        <td>Proven optimal, or a computable gap</td>
+        <td>Yes, if single-threaded with a fixed seed</td>
+        <td>Correctness-critical, moderate scale, when a certificate matters</td>
+      </tr>
+      <tr>
+        <td>Column generation / branch-and-price</td>
+        <td>Generates candidate duty "columns" via a pricing subproblem instead of enumerating all pairings upfront</td>
+        <td>Proven optimal in principle; run to a practical gap at scale</td>
+        <td>Usually yes</td>
+        <td>Massive-scale crew pairing (thousands of pilots) — the actual industry-standard approach at major-airline scale, at the cost of being close to its own research project to implement well</td>
+      </tr>
+      <tr>
+        <td>Metaheuristics (genetic algorithms, simulated annealing, large neighborhood search)</td>
+        <td>Start from a feasible schedule, repeatedly perturb and accept improving moves</td>
+        <td>None — no certificate, no bound</td>
+        <td>No, even with a fixed seed in practice</td>
+        <td>When "good fast" beats "provably optimal," or the constraints are too messy to formulate cleanly. (LNS is, notably, also one of CP-SAT's own internal portfolio strategies for large instances.)</td>
+      </tr>
+      <tr>
+        <td>Constructive / greedy heuristics</td>
+        <td>One-pass rule, e.g. "assign the next available resource"</td>
+        <td>None, often far from optimal</td>
+        <td>Yes</td>
+        <td>Operations with almost no combinatorial freedom left, where a human already gets the answer right by inspection — using anything heavier here is pure overhead</td>
+      </tr>
+      <tr>
+        <td>Reinforcement learning</td>
+        <td>Learn an assignment policy from a reward signal</td>
+        <td>None</td>
+        <td>Deterministic at inference, unstable to train</td>
+        <td>Research-stage for this problem class; promising for narrow, fixed rule sets, not something to trust for duty-time correctness today</td>
+      </tr>
+      <tr>
+        <td>LLM / agentic</td>
+        <td>Next-token generation, optionally with tool calls</td>
+        <td>None — cannot verify its own output against the rule set</td>
+        <td>No, even at temperature zero, because there's no search process at all</td>
+        <td>Front-end and scaffolding around the solver — the subject of the next section</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>The pattern across every non-exact row is the same: you gain scale or flexibility by giving up the certificate. Column generation is the only approach on this list that both scales past what plain CP-SAT/MILP can handle <strong>and</strong> keeps an optimality proof — which is also why it's a much bigger engineering investment than a single monolithic model.</p>
+
+  <h2>Problem: can an agent just generate the schedule?</h2>
+
+  <p>Verifying a completed schedule against the constraint set is cheap. Finding one from a space of <code>2ⁿ</code> or <code>n!</code> candidates is expensive. That asymmetry between cheap-to-verify and expensive-to-find is the informal definition of NP-hard, and it's exactly the shape of this problem. An LLM has no search process behind its output — it can produce a schedule that reads perfectly plausible and still double-books a pilot, and it has no built-in mechanism to check that against dozens of simultaneous hard rules, let alone search toward a fix when a check fails. Bolting a verifier on top just re-derives the validator layer the solver already has, minus the ability to improve toward a corrected answer.</p>
+
+  <h2>Solution: use agents at the edges, where verification is cheap and the stakes are lower</h2>
+
+  <p>The honest role for agentic AI here is not "replace the solver," it's "make small, checkable pieces of this workflow faster." Three concrete examples, using the same five-flight toy instance from earlier.</p>
+
+  <p><strong>a) Generating a flight-connection graph for a small instance.</strong> This is pure enumeration of feasible pairs, not optimization — cheap to verify, so an agent is a reasonable fit for producing it quickly, e.g. for documentation, test fixtures, or training material.</p>
+
+  <pre><code>Prompt:
+"Given this list of flights (origin, destination, scheduled departure,
+scheduled arrival) and a minimum turn time of 45 minutes, output a
+directed graph as JSON. Nodes are flights. Add edge A→B only if the
+same aircraft could feasibly fly B immediately after A: same airport,
+and dep(B) ≥ arr(A) + turn time. Do not choose a routing — enumerate
+every feasible connection, nothing else."
+
+Flights:
+F1 JFK→ORD 08:00–10:00   F2 ORD→JFK 11:00–13:00
+F3 JFK→ATL 09:30–11:30   F4 ATL→ORD 12:30–14:00
+F5 ORD→ATL 15:00–16:30</code></pre>
+
+  <pre><code>{
+  "nodes": ["F1", "F2", "F3", "F4", "F5"],
+  "edges": [
+    {"from": "F1", "to": "F2"},
+    {"from": "F1", "to": "F5"},
+    {"from": "F3", "to": "F4"},
+    {"from": "F4", "to": "F5"}
+  ]
+}</code></pre>
+
+  <p>That output is trivial for a human to check by hand against the four rules above — which is exactly why it's a safe task to hand to an agent.</p>
+
+  <p><strong>b) Drafting candidate crew pairings from a chosen routing.</strong> Once an actual routing is picked — say, aircraft 1 flies <code>F1→F2</code> and aircraft 2 flies <code>F3→F4→F5</code> — an agent can draft candidate duty chains and compute their block time and duty span, flagging anything that looks like it needs a closer look:</p>
+
+  <pre><code>Prompt:
+"Given these two aircraft routes and a max duty length of 10 hours,
+propose one crew duty per route. For each duty, report total block
+time, duty span (report-in to release), and whether the duty ends
+at the crew's base (JFK) or away from it."</code></pre>
+
+  <pre><code>Duty 1 (aircraft 1, route F1→F2): block time 4h00m, span 08:00–13:00,
+  ends at JFK (base) — no relocation needed.
+Duty 2 (aircraft 2, route F3→F4→F5): block time 5h00m, span 09:30–16:30,
+  ends at ATL — away from base, relocation required before next duty.</code></pre>
+
+  <p>Duty 2 ending away from base is a real, common situation, and exactly the reason for the third prompt.</p>
+
+  <p><strong>c) Checking relocation options against rest rules.</strong> This is the case where an agent is most useful precisely because it's checking arithmetic against a hard constraint, not inventing a schedule:</p>
+
+  <pre><code>Prompt:
+"Pilot's duty just ended at ATL at 16:30. Their next duty starts at
+JFK at 07:00 the next day. Minimum rest is 10 hours. Evaluate these
+two relocation options and flag any that violate minimum rest:
+(1) deadhead flight ATL→JFK departing 18:00, arriving 20:00.
+(2) drive ATL→JFK, approximately 10.5 hours, departing right after
+    the duty ends at 17:00."</code></pre>
+
+  <pre><code>Option 1 (deadhead): arrives 20:00, rest before 07:00 report = 11h00m.
+  Meets 10h minimum. FEASIBLE.
+Option 2 (drive): arrives approx. 03:30, rest before 07:00 report = 3h30m.
+  Violates 10h minimum rest. NOT FEASIBLE — do not offer this option.</code></pre>
+
+  <p>That's the pattern worth generalizing: every one of these three prompts asks the agent to produce something a human (or the actual validator layer) can check in seconds, never to search the combinatorial space or commit to a final production schedule. The moment a prompt asks an agent to <strong>choose</strong> the optimal routing or <strong>guarantee</strong> legality across a full multi-day roster, it's back on the wrong side of the verify/search asymmetry — and that's where the certificate-carrying solver still has to do the work.</p>
+
+  <h2>Bottom line</h2>
+
+  <p>This is a decades-old, well-studied class of NP-hard problem, and the honest solution to it is still a constraint solver with a provable (or boundable) answer — not a heuristic, not a learned policy, and not a language model. Agentic AI's genuine, defensible role is narrow and sits around that solver: generating small checkable structures, drafting candidates for a human or validator to confirm, and checking arithmetic against fixed rules. It's a smaller claim than "AI schedules your fleet," but it's the one that survives contact with a real duty-time rule and a real branch-and-bound tree.</p>
+
+</article>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <a href="mailto:volodymyr.kukushkin88@gmail.com">volodymyr.kukushkin88@gmail.com</a>
+    <a href="https://www.linkedin.com/in/volodymyr-kukushkin-88" target="_blank" rel="noopener">linkedin</a>
+    <span>Málaga, ES</span>
+    <span class="copy">© 2026 Volodymyr Kukushkin</span>
+  </div>
+</footer>
+
+<script>
+document.getElementById('themeToggle').addEventListener('click', function () {
+  var n = document.documentElement.getAttribute('data-theme') === 'silver' ? 'dark' : 'silver';
+  document.documentElement.setAttribute('data-theme', n);
+  try { localStorage.setItem('theme', n); } catch (e) {}
+});
+</script>
+
+</body>
+</html>
